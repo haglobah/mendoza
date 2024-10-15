@@ -3,15 +3,15 @@
 
   inputs = {
     nixpkgs.url = "https://flakehub.com/f/DeterminateSystems/nixpkgs-weekly/*.tar.gz";
-    janet-nix.url = "github:turnerdev/janet-nix";
-    janet-nix.inputs.nixpkgs.follows = "nixpkgs";
+    # janet-nix.url = "github:turnerdev/janet-nix";
+    # janet-nix.inputs.nixpkgs.follows = "nixpkgs";
     devshell.url = "github:numtide/devshell";
     devshell.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs@{
     flake-parts,
-    janet-nix,
+    # janet-nix,
     ...
     }:
     flake-parts.lib.mkFlake { inherit inputs; } {
@@ -21,12 +21,12 @@
       ];
 
       perSystem = { config, self', inputs', pkgs, system, ... }: {
-        packages.default = janet-nix.packages.${system}.mkJanet {
-          name = "mdz";
-          version = "0.0.1";
-          src = ./.;
-          quickbin = ./mdz;
-        };
+        # packages.default = janet-nix.packages.${system}.mkJanet {
+        #   name = "mdz";
+        #   version = "0.0.1";
+        #   src = ./.;
+        #   main = ./mdz;
+        # };
         devshells.default = {
           env = [
             { name = "JANET_PATH"; eval = "$PWD/.jpm"; }
@@ -40,6 +40,7 @@
             pkgs.janet
             pkgs.jpm
             pkgs.gccgo14
+            pkgs.fswatch
           ];
           commands = [
             { name = "devshell-test"; command = "echo 'Is this working?'"; help = "A command to test devshell";}
